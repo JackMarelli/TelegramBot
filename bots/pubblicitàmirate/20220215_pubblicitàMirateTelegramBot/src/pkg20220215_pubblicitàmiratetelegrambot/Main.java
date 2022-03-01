@@ -19,8 +19,12 @@ public class Main {
         requestManager rm = new requestManager(token);
         jsonParser jp = new jsonParser();
 
-        String json = rm.request("getUpdates");
-        System.out.println(json);
-        System.out.println(jp.parseUpdates(json));
+        
+        
+        //String json = rm.request("getUpdates");
+        //System.out.println(json);
+        //System.out.println(jp.parseUpdates(json));
+        
+        rm.sendMessage("578041481", "sciaobelo");
     }
 }
