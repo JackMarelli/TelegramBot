@@ -4,7 +4,12 @@
  * and open the template in the editor.
  */
 package pkg20220215_pubblicitàmiratetelegrambot;
+
 import mytelegramapi.*;
+import mytelegramapi.Objects.Update;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  *
  * @author Giacomo
@@ -19,12 +24,18 @@ public class Main {
         requestManager rm = new requestManager(token);
         jsonParser jp = new jsonParser();
 
-        
-        
-        //String json = rm.request("getUpdates");
-        //System.out.println(json);
-        //System.out.println(jp.parseUpdates(json));
-        
-        rm.sendMessage("578041481", "sciaobelo");
+        String jsonString = rm.request("getUpdates");
+        JSONObject updatesObj = new JSONObject(jsonString);
+
+        JSONArray arr = updatesObj.getJSONArray("result");
+
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject obj = arr.getJSONObject(i);
+
+            System.out.println("\n\nUPDATE N: " + i);
+            Update update = jp.parseUpdate(obj);
+            System.out.println(update.toString());
+        }
+
     }
 }

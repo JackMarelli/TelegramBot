@@ -5,6 +5,7 @@
  */
 package mytelegramapi;
 
+import mytelegramapi.Objects.Update;
 import org.json.*;
 
 /**
@@ -30,40 +31,47 @@ public class jsonParser {
         return ok + "\n" + result.toString();
     }
 
-    public String parseUpdate(JSONObject obj) {
+    public Update parseUpdate(JSONObject obj) {
 
-        int update_id = obj.getInt("update_id");
+        //update
+        Update update = new Update();
+        update.setUpdate_id(obj.getInt("update_id"));
+
+        //message
         JSONObject message = obj.getJSONObject("message");
-        int message_id = message.getInt("message_id");
+        update.setMessage_id(message.getInt("message_id"));
 
-        /*
-        //parse from
+        // from
         JSONObject from = message.getJSONObject("from");
-        int from_id = from.getInt("id");
-        boolean from_is_bot = from.getBoolean("is_bot");
-        String from_first_name = from.getString("first_name");
-        String from_last_name = from.getString("last_name");
-        String language_code = from.getString("language_code");
+        update.setFrom_id(from.getInt("id"));
+        update.setIs_bot(from.getBoolean("is_bot"));
+        update.setFrom_first_name(from.getString("first_name"));
+        update.setFrom_last_name(from.getString("last_name"));
+        update.setFrom_id(from.getInt("id"));
+        update.setLanguage_code(from.getString("language_code"));
 
-        //parse chat
+        // chat
         JSONObject chat = message.getJSONObject("chat");
-        int chat_id = from.getInt("id");
-        String chat_first_name = from.getString("first_name");
-        String chat_last_name = from.getString("last_name");
-        String type = from.getString("type");
-         */
-        //other
-        int date = obj.getInt("date");
-        String text = getMessageText(obj);
+        update.setChat_id(chat.getInt("id"));
+        update.setChat_first_name(chat.getString("first_name"));
+        update.setChat_last_name(chat.getString("last_name"));
+        update.setChat_type(chat.getString("type"));
+
+        //dated
+        update.setDate(message.getInt("date"));
+
+        //text
+        update.setText(message.getString("text"));
 
         //TODO: leggere "entities" eventualmente
-        //check if key exists in obj obj.has("entities");
-        
-        return text;
-    }
+        if (message.has("entities")) {
+            JSONObject entitiesObj = message.getJSONArray("entities").getJSONObject(0);
+            update.setOffset(entitiesObj.getInt("offset"));
+            update.setLength(entitiesObj.getInt("length"));
+            update.setEntities_type(entitiesObj.getString("type"));
+        }
 
-    public String getMessageText(JSONObject message) {
-        return message.getString("text");
+        return update;
     }
 
 }
