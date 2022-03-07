@@ -54,7 +54,7 @@ public class requestManager {
         }
     }
 
-    public Boolean sendMessage(String chat_id, String message) {
+    public Boolean sendMessage(int chat_id, String message) {
         try {
             URL url = new URL(getUrlWithToken() + "sendMessage?chat_id=" + chat_id + "&text=" + message);
             BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));

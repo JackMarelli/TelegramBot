@@ -46,7 +46,10 @@ public class Main {
             
             if (update.isCommand()) {
                 System.out.println(update.getCitta());
+                
+                String toAdd = update.getChat_id() + ";" + update.getChat_first_name()+ ";" +update.getChat_last_name()+ "\n"; //da aggiungere coordinate da OSM (TODO: OSM Manager)
                 //invio messaggio a chi mi ha mandato l'update
+                rm.sendMessage(update.getChat_id(), "Ricevuto+:D");
             }
             else {
                 System.out.println("Non è un comando");
