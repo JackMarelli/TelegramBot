@@ -35,6 +35,9 @@ public class Update {
     int length;
     String entities_type;
 
+    //utils
+    String citta;
+
     public Update() {
 
     }
@@ -166,25 +169,46 @@ public class Update {
     public void setEntities_type(String entities_type) {
         this.entities_type = entities_type;
     }
-    
-    public String toString() {
-        String s = "update_id: " + update_id +
-                "\nmessage_id: " + message_id +
-                "\n(from)id: " + from_id +
-                "\n(from)first_name: " + from_first_name +
-                "\n(from)last_name: " + from_last_name +
-                "\n(from)language_code: " + language_code +
-                "\n(chat)id: " + chat_id +
-                "\n(chat)first_name: " + chat_first_name +
-                "\n(chat)last_name: " + chat_last_name +
-                "\n(chat)type: " + chat_type +
-                "\ndate: " + date +
-                "\ntext: " + text +
-                "\n(entities)offset: " + offset +
-                "\n(entities)length: " + length +            
-                "\n(entities)type: " + entities_type;
 
-        
+    //ritorna true solo se il comando è /citta
+    public boolean isCommand() {
+        if (text.substring(0, 1).equals("/")) {
+            if (text.substring(0, text.indexOf(' ')).equals("/citta")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getCitta() {
+        if (this.isCommand()) {
+            int pos1 = text.indexOf(' ') + 1;
+            int pos2 = text.length();
+
+            String citta = text.substring(pos1, pos2);
+            this.citta = citta;
+            return citta;
+        }
+        return "NA";
+    }
+
+    public String toString() {
+        String s = "update_id: " + update_id
+                + "\nmessage_id: " + message_id
+                + "\n(from)id: " + from_id
+                + "\n(from)first_name: " + from_first_name
+                + "\n(from)last_name: " + from_last_name
+                + "\n(from)language_code: " + language_code
+                + "\n(chat)id: " + chat_id
+                + "\n(chat)first_name: " + chat_first_name
+                + "\n(chat)last_name: " + chat_last_name
+                + "\n(chat)type: " + chat_type
+                + "\ndate: " + date
+                + "\ntext: " + text
+                + "\n(entities)offset: " + offset
+                + "\n(entities)length: " + length
+                + "\n(entities)type: " + entities_type;
+
         return s;
     }
 }

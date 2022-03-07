@@ -29,6 +29,7 @@ public class Main {
 
         JSONArray arr = updatesObj.getJSONArray("result");
 
+        /*
         for (int i = 0; i < arr.length(); i++) {
             JSONObject obj = arr.getJSONObject(i);
 
@@ -36,6 +37,22 @@ public class Main {
             Update update = jp.parseUpdate(obj);
             System.out.println(update.toString());
         }
-
+         */
+        //stampo solo ultimo update (se ci sono update)
+        if (arr.length() > 0) {
+            JSONObject obj = arr.getJSONObject(arr.length()-1);
+            Update update = jp.parseUpdate(obj);
+            System.out.println(update.toString());
+            
+            if (update.isCommand()) {
+                System.out.println(update.getCitta());
+                //invio messaggio a chi mi ha mandato l'update
+            }
+            else {
+                System.out.println("Non è un comando");
+            }
+        } else {
+            System.out.println("Nessun Update :)");
+        }
     }
 }
