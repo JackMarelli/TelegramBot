@@ -5,6 +5,7 @@
  */
 package pkg20220215_pubblicitàmiratetelegrambot;
 
+import OSM.OSMManager;
 import mytelegramapi.*;
 import mytelegramapi.Objects.Update;
 import org.json.JSONArray;
@@ -49,7 +50,9 @@ public class Main {
                 
                 String toAdd = update.getChat_id() + ";" + update.getChat_first_name()+ ";" +update.getChat_last_name()+ "\n"; //da aggiungere coordinate da OSM (TODO: OSM Manager)
                 //invio messaggio a chi mi ha mandato l'update
-                rm.sendMessage(update.getChat_id(), "Ricevuto+:D");
+                //rm.sendMessage(update.getChat_id(), "Ricevuto+:D");
+                OSMManager osm = new OSMManager();
+                
             }
             else {
                 System.out.println("Non è un comando");

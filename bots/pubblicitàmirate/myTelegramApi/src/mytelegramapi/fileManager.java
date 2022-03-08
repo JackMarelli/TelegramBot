@@ -5,10 +5,13 @@
  */
 package mytelegramapi;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 
 /**
  *
@@ -17,13 +20,14 @@ import java.io.IOException;
 public class fileManager {
 
     String filename;
- 
+
     File file;
     FileWriter fw;
     BufferedWriter bw;
+    BufferedReader br;
 
     boolean append;
-    
+
     public fileManager() {
     }
 
@@ -35,16 +39,34 @@ public class fileManager {
         if (!file.exists()) {
             file.createNewFile();
         }
-        
+
         fw = new FileWriter(file, append);
         bw = new BufferedWriter(fw);
     }
 
-    public void addLine(String line, boolean acapo) throws IOException {
+    public void add(String toAdd, boolean acapo) throws IOException {
         if (acapo) {
-            bw.write(line +"\n");
+            bw.write(toAdd + "\n");
         } else {
-            bw.write(line);
+            bw.write(toAdd);
         }
+    }
+
+    public String getString() throws IOException {
+        StringBuffer fileData = new StringBuffer();
+        BufferedReader reader = new BufferedReader(
+                new FileReader(file.getAbsolutePath()));
+        char[] buf = new char[1024];
+        int numRead = 0;
+        while ((numRead = reader.read(buf)) != -1) {
+            String readData = String.valueOf(buf, 0, numRead);
+            fileData.append(readData);
+        }
+        reader.close();
+        return fileData.toString();
+    }
+    
+    public File getFile() {
+        return file;
     }
 }
