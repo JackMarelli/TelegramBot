@@ -46,15 +46,12 @@ public class jsonParser {
         update.setFrom_id(from.getInt("id"));
         update.setIs_bot(from.getBoolean("is_bot"));
         update.setFrom_first_name(from.getString("first_name"));
-        update.setFrom_last_name(from.getString("last_name"));
         update.setFrom_id(from.getInt("id"));
-        update.setLanguage_code(from.getString("language_code"));
 
         // chat
         JSONObject chat = message.getJSONObject("chat");
         update.setChat_id(chat.getInt("id"));
         update.setChat_first_name(chat.getString("first_name"));
-        update.setChat_last_name(chat.getString("last_name"));
         update.setChat_type(chat.getString("type"));
 
         //dated

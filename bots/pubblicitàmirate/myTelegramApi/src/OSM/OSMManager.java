@@ -35,9 +35,11 @@ import org.xml.sax.SAXException;
  */
 public class OSMManager {
 
-    String defaultUrl;
-    String parametersUrl;
-    String testUrl;
+    private String defaultUrl;
+    private String parametersUrl;
+    private String testUrl;
+    private Document doc;
+    private File xmlFile;
 
     public OSMManager() {
         defaultUrl = "https://nominatim.openstreetmap.org/search?q=";
@@ -45,39 +47,19 @@ public class OSMManager {
         testUrl = "https://nominatim.openstreetmap.org/search?q=mariano+comense,+monnet&format=xml&polygon_geojson=1&addressdetails=1";
     }
 
-    //dato un posto da cercare come stringa, ritorna xml come stringa
-    public String getXMLAsString(String researchString) {
-        try {
-            URL url = new URL(defaultUrl + getEncodedString(researchString) + parametersUrl);
-
-            Scanner scs = new Scanner(url.openStream());
-            scs.useDelimiter("\u001a");
-            String fileString = scs.next();
-            return fileString;
-        } catch (UnsupportedEncodingException ex) {
-            Logger.getLogger(OSMManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(OSMManager.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(OSMManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return null;
-    }
-    
-    public File getXMLAsFile(String researchString) {
+    public File getXMLAsFile(String s) {
         try {
             fileManager fm = new fileManager("return.xml", false);
-            fm.add(getXMLAsString(researchString), false);
+            fm.add(getXML(s), false);
             return fm.getFile();
         } catch (IOException ex) {
             Logger.getLogger(OSMManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
-    private String getXML(String search) throws FileNotFoundException, IOException {
-        URL url = new URL(defaultUrl + getEncodedString(search) + parametersUrl);
+
+    private String getXML(String s) throws FileNotFoundException, IOException {
+        URL url = new URL(defaultUrl + getEncodedString(s) + parametersUrl);
         Scanner scanner = new Scanner(url.openStream());
         scanner.useDelimiter("\u001a");
         String file = scanner.next();
@@ -85,22 +67,27 @@ public class OSMManager {
         return file;
     }
 
-    public List<CPlace> searchPlace(String place) throws IOException, ParserConfigurationException, SAXException {
-        
-        List<CPlace> places = new ArrayList<CPlace>();
-        
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        String xml = getXML(place);
-        Document doc = builder.parse(new InputSource(new StringReader(xml)));
+    public Place getPlace(String s) throws ParserConfigurationException, SAXException, IOException {
+        DocumentBuilderFactory factory;
+        DocumentBuilder builder;
+        Element root, element;
+        NodeList nodelist;
+        factory = DocumentBuilderFactory.newInstance();
+        builder = factory.newDocumentBuilder();
 
-        NodeList placesNodeList = doc.getElementsByTagName("place");
-        for (int i = 0; i < placesNodeList.getLength(); i++) {
-            places.add(placesNodeList.item(i).getInfo());
+        doc = builder.parse(getXMLAsFile(s));
+        root = doc.getDocumentElement();
+
+        //N.B: essendo una procedura automatica, considero il primo risultato come quello più attendibile
+        nodelist = root.getElementsByTagName("place");
+        if (nodelist != null && nodelist.getLength() > 0) {
+            element = (Element) nodelist.item(0);
+            return new Place(element.getAttribute("place_id").toString(), Double.parseDouble(element.getAttribute("lat")), Double.parseDouble(element.getAttribute("lon")));
+        } else {
+            return null;
         }
-        
-        return places;
     }
+
     public String getEncodedString(String toEncode) throws UnsupportedEncodingException {
         return URLEncoder.encode(toEncode, StandardCharsets.UTF_8.toString());
     }

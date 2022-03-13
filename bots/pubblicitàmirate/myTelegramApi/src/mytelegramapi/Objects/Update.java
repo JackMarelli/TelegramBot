@@ -21,13 +21,10 @@ public class Update {
     int from_id;
     boolean is_bot;
     String from_first_name;
-    String from_last_name;
-    String language_code;
 
     //chat
     int chat_id;
     String chat_first_name;
-    String chat_last_name;
     String chat_type;
 
     //entities
@@ -97,23 +94,6 @@ public class Update {
     public void setFrom_first_name(String from_first_name) {
         this.from_first_name = from_first_name;
     }
-
-    public String getFrom_last_name() {
-        return from_last_name;
-    }
-
-    public void setFrom_last_name(String from_last_name) {
-        this.from_last_name = from_last_name;
-    }
-
-    public String getLanguage_code() {
-        return language_code;
-    }
-
-    public void setLanguage_code(String language_code) {
-        this.language_code = language_code;
-    }
-
     public int getChat_id() {
         return chat_id;
     }
@@ -128,14 +108,6 @@ public class Update {
 
     public void setChat_first_name(String chat_first_name) {
         this.chat_first_name = chat_first_name;
-    }
-
-    public String getChat_last_name() {
-        return chat_last_name;
-    }
-
-    public void setChat_last_name(String chat_last_name) {
-        this.chat_last_name = chat_last_name;
     }
 
     public String getChat_type() {
@@ -197,11 +169,8 @@ public class Update {
                 + "\nmessage_id: " + message_id
                 + "\n(from)id: " + from_id
                 + "\n(from)first_name: " + from_first_name
-                + "\n(from)last_name: " + from_last_name
-                + "\n(from)language_code: " + language_code
                 + "\n(chat)id: " + chat_id
                 + "\n(chat)first_name: " + chat_first_name
-                + "\n(chat)last_name: " + chat_last_name
                 + "\n(chat)type: " + chat_type
                 + "\ndate: " + date
                 + "\ntext: " + text

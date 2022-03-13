@@ -18,11 +18,11 @@ import java.util.stream.Collectors;
  *
  * @author Giacomo
  */
-public class requestManager {
+public class TelegramBotManager {
 
     String token;
 
-    public requestManager(String token) {
+    public TelegramBotManager(String token) {
         this.token = token;
     }
 
@@ -54,17 +54,16 @@ public class requestManager {
         }
     }
 
-    public Boolean sendMessage(int chat_id, String message) {
+    public void sendMessage(int chat_id, String message) {
         try {
             URL url = new URL(getUrlWithToken() + "sendMessage?chat_id=" + chat_id + "&text=" + message);
             BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
             System.out.println(url.toString());
 
         } catch (MalformedURLException ex) {
-            Logger.getLogger(requestManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelegramBotManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(requestManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TelegramBotManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return true; //da cambiare
     }
 }
