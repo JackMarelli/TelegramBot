@@ -12,18 +12,18 @@ package mytelegramapi.Objects;
 public class Update {
 
     //general
-    int update_id;
-    int message_id;
-    int date;
+    long update_id;
+    long message_id;
+    long date;
     String text;
 
     //from
-    int from_id;
+    String from_id;
     boolean is_bot;
     String from_first_name;
 
     //chat
-    int chat_id;
+    long chat_id;
     String chat_first_name;
     String chat_type;
 
@@ -39,7 +39,7 @@ public class Update {
 
     }
 
-    public int getUpdate_id() {
+    public long getUpdate_id() {
         return update_id;
     }
 
@@ -47,7 +47,7 @@ public class Update {
         this.update_id = update_id;
     }
 
-    public int getMessage_id() {
+    public long getMessage_id() {
         return message_id;
     }
 
@@ -55,7 +55,7 @@ public class Update {
         this.message_id = message_id;
     }
 
-    public int getDate() {
+    public long getDate() {
         return date;
     }
 
@@ -71,11 +71,11 @@ public class Update {
         this.text = text;
     }
 
-    public int getFrom_id() {
+    public String getFrom_id() {
         return from_id;
     }
 
-    public void setFrom_id(int from_id) {
+    public void setFrom_id(String from_id) {
         this.from_id = from_id;
     }
 
@@ -94,7 +94,7 @@ public class Update {
     public void setFrom_first_name(String from_first_name) {
         this.from_first_name = from_first_name;
     }
-    public int getChat_id() {
+    public long getChat_id() {
         return chat_id;
     }
 

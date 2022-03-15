@@ -47,4 +47,12 @@ public class Place {
     public void setLon(double lon) {
         this.lon = lon;
     }
+
+    public String toString() {
+        return ("Place ID: " + id + "\nLAT: " + lat + "\nLON: " + lon);
+    }
+
+    public String toCSV() {
+        return (id + ";" + lat + ";" + lon);
+    }
 }

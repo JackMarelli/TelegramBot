@@ -8,11 +8,18 @@ package mytelegramapi;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpClient;
 
 /**
  *
@@ -41,7 +48,6 @@ public class TelegramBotManager {
             //get url with token, add request name 
             URL url = new URL(getUrlWithToken() + method_name);
             BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-            System.out.println(url.toString());
 
             //read response
             String jsonString = br.lines().collect(Collectors.joining());
@@ -54,16 +60,50 @@ public class TelegramBotManager {
         }
     }
 
-    public void sendMessage(int chat_id, String message) {
+    public String getUpdates() throws IOException {
+        URL url = new URL(getUrlWithToken() + "getUpdates");
+        BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+
+        //read response
+        String jsonString = br.lines().collect(Collectors.joining());
+
+        //close buffered reader, return json
+        br.close();
+        return jsonString;
+    }
+
+    public String getMe() throws IOException {
+        URL url = new URL(getUrlWithToken() + "getMe");
+        BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+
+        //read response
+        String jsonString = br.lines().collect(Collectors.joining());
+
+        //close buffered reader, return json
+        br.close();
+        return jsonString;
+    }
+
+    public void sendMessage(long chat_id, String message) throws InterruptedException {
         try {
-            URL url = new URL(getUrlWithToken() + "sendMessage?chat_id=" + chat_id + "&text=" + message);
-            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-            System.out.println(url.toString());
+            String urlString = getUrlWithToken() + "sendMessage?chat_id=" + chat_id + "&text=" + getEncodedString(message);
+            System.out.println(urlString);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(urlString))
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
+            HttpResponse<String> response = HttpClient.newHttpClient()
+                    .send(request, HttpResponse.BodyHandlers.ofString());
 
         } catch (MalformedURLException ex) {
             Logger.getLogger(TelegramBotManager.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(TelegramBotManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public String getEncodedString(String toEncode) throws UnsupportedEncodingException {
+        return URLEncoder.encode(toEncode, StandardCharsets.UTF_8.toString());
     }
 }

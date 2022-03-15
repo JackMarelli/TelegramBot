@@ -43,10 +43,10 @@ public class jsonParser {
 
         // from
         JSONObject from = message.getJSONObject("from");
-        update.setFrom_id(from.getInt("id"));
+        update.setFrom_id(Long.toString(from.getLong("id")));
         update.setIs_bot(from.getBoolean("is_bot"));
         update.setFrom_first_name(from.getString("first_name"));
-        update.setFrom_id(from.getInt("id"));
+        update.setFrom_id(Long.toString(from.getLong("id")));
 
         // chat
         JSONObject chat = message.getJSONObject("chat");
