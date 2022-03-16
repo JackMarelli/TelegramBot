@@ -38,34 +38,44 @@ public class jsonParser {
         update.setUpdate_id(obj.getInt("update_id"));
 
         //message
-        JSONObject message = obj.getJSONObject("message");
-        update.setMessage_id(message.getInt("message_id"));
+        if (obj.has("message")) {
+            JSONObject message = obj.getJSONObject("message");
+            update.setMessage_id(message.getInt("message_id"));
 
-        // from
-        JSONObject from = message.getJSONObject("from");
-        update.setFrom_id(Long.toString(from.getLong("id")));
-        update.setIs_bot(from.getBoolean("is_bot"));
-        update.setFrom_first_name(from.getString("first_name"));
-        update.setFrom_id(Long.toString(from.getLong("id")));
+            // from
+            if (message.has("from")) {
+                JSONObject from = message.getJSONObject("from");
+                update.setFrom_id(Long.toString(from.getLong("id")));
+                update.setIs_bot(from.getBoolean("is_bot"));
+                update.setFrom_first_name(from.getString("first_name"));
+                update.setFrom_id(Long.toString(from.getLong("id")));
+            }
 
-        // chat
-        JSONObject chat = message.getJSONObject("chat");
-        update.setChat_id(chat.getInt("id"));
-        update.setChat_first_name(chat.getString("first_name"));
-        update.setChat_type(chat.getString("type"));
+            // chat
+            if (message.has("chat")) {
+                JSONObject chat = message.getJSONObject("chat");
+                update.setChat_id(chat.getInt("id"));
+                update.setChat_first_name(chat.getString("first_name"));
+                update.setChat_type(chat.getString("type"));
+            }
 
-        //dated
-        update.setDate(message.getInt("date"));
+            //date
+            if (message.has("date")) {
+                update.setDate(message.getInt("date"));
+            }
 
-        //text
-        update.setText(message.getString("text"));
+            //text
+            if (message.has("text")) {
+                update.setText(message.getString("text"));
+            }
 
-        //TODO: leggere "entities" eventualmente
-        if (message.has("entities")) {
-            JSONObject entitiesObj = message.getJSONArray("entities").getJSONObject(0);
-            update.setOffset(entitiesObj.getInt("offset"));
-            update.setLength(entitiesObj.getInt("length"));
-            update.setEntities_type(entitiesObj.getString("type"));
+            //entities
+            if (message.has("entities")) {
+                JSONObject entitiesObj = message.getJSONArray("entities").getJSONObject(0);
+                update.setOffset(entitiesObj.getInt("offset"));
+                update.setLength(entitiesObj.getInt("length"));
+                update.setEntities_type(entitiesObj.getString("type"));
+            }
         }
 
         return update;

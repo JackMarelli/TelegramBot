@@ -163,6 +163,10 @@ public class Update {
         }
         return "NA";
     }
+    
+    public boolean isBotCommand() {
+        return (entities_type.equals("bot_command"));
+    }
 
     public String toString() {
         String s = "update_id: " + update_id

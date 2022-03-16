@@ -41,6 +41,7 @@ public class ThreadBot extends Thread {
         String jsonString = rm.request("getUpdates");
         JSONObject updatesObj = new JSONObject(jsonString);
         JSONArray arr = updatesObj.getJSONArray("result");
+        System.out.println(arr.toString());
 
         UserList ul = null;
         try {
