@@ -28,7 +28,7 @@ import pkg20220215_pubblicitàmiratetelegrambot.Main;
 public class ThreadBot extends Thread {
 
     long cycle;
-    
+
     public ThreadBot() {
         cycle = 0;
     }
@@ -38,10 +38,6 @@ public class ThreadBot extends Thread {
         String token = "5275943838:AAGcv3Ma63vSiY4-r-q1qS-qdwnHrewlWII";
         TelegramBotManager rm = new TelegramBotManager(token);
         jsonParser jp = new jsonParser();
-        String jsonString = rm.request("getUpdates");
-        JSONObject updatesObj = new JSONObject(jsonString);
-        JSONArray arr = updatesObj.getJSONArray("result");
-        System.out.println(arr.toString());
 
         UserList ul = null;
         try {
@@ -49,7 +45,7 @@ public class ThreadBot extends Thread {
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         //stampo tutti gli update
         /*
             for (int i = 0; i < arr.length(); i++) {
@@ -61,9 +57,13 @@ public class ThreadBot extends Thread {
             }
          */
         while (true) {
+            String jsonString = rm.request("getUpdates");
+            JSONObject updatesObj = new JSONObject(jsonString);
+            JSONArray arr = updatesObj.getJSONArray("result");
+            System.out.println(arr.toString());
             //userlist toString
             System.out.println(ul.toString());
-            
+
             //sleep & cycle increment
             try {
                 Thread.sleep(5000);
@@ -72,7 +72,7 @@ public class ThreadBot extends Thread {
             }
             System.out.println("ThreadBot CYCLE N. " + cycle);
             cycle++;
-            
+
             //stampo solo ultimo update (se ci sono update)
             if (arr.length() > 0) {
                 JSONObject obj = arr.getJSONObject(arr.length() - 1);

@@ -28,9 +28,11 @@ import java.net.http.HttpClient;
 public class TelegramBotManager {
 
     String token;
+    long offset;
 
     public TelegramBotManager(String token) {
         this.token = token;
+        offset = 0;
     }
 
     public String getUrlWithToken() {
@@ -61,6 +63,7 @@ public class TelegramBotManager {
     }
 
     public String getUpdates() throws IOException {
+        //build url
         URL url = new URL(getUrlWithToken() + "getUpdates");
         BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 
