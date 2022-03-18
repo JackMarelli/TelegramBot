@@ -57,59 +57,69 @@ public class ThreadBot extends Thread {
             }
          */
         while (true) {
-            String jsonString = rm.request("getUpdates");
-            JSONObject updatesObj = new JSONObject(jsonString);
-            JSONArray arr = updatesObj.getJSONArray("result");
-            System.out.println(arr.toString());
-            //userlist toString
-            System.out.println(ul.toString());
-
-            //sleep & cycle increment
+            System.out.println("\nThreadBot CYCLE N. " + cycle);
             try {
-                Thread.sleep(5000);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ThreadBot.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            System.out.println("ThreadBot CYCLE N. " + cycle);
-            cycle++;
-
-            //stampo solo ultimo update (se ci sono update)
-            if (arr.length() > 0) {
-                JSONObject obj = arr.getJSONObject(arr.length() - 1);
-                Update update = jp.parseUpdate(obj);
-                //System.out.println(update.toString());
-
-                if (update.isCommand()) {
-                    String citta = update.getCitta();
-
-                    //invio messaggio a chi mi ha mandato l'update
-                    OSMManager osm = new OSMManager();
-                    try {
-                        rm.sendMessage(update.getChat_id(), "Ricevuto :D");
-
-                        //prendo il primo posto e aggiungo o aggiorno l'utente
-                        Place p = osm.getPlace(citta);
-                        User u = new User(p, update.getFrom_id());
-                        int findUserResult = ul.findUser(u);
-                        if (findUserResult == -1) {
-                            System.out.println("USER ADDED");
-                            ul.add(u);
-                        } else {
-                            System.out.println("USER UPDATED");
-                            ul.updateUser(findUserResult, u);
-                        }
-                        ul.updateFile();
-                    } catch (ParserConfigurationException | SAXException | IOException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-
+                String jsonString = "";
+                if (rm.getOffset() != 0) {
+                    jsonString = rm.getUpdatesWithOffset();
                 } else {
-                    System.out.println("Non è un comando");
+                    jsonString = rm.getUpdates();
                 }
-            } else {
-                System.out.println("Nessun update nelle ultime 24 ore :)");
+
+                JSONObject updatesObj = new JSONObject(jsonString);
+                JSONArray arr = updatesObj.getJSONArray("result");
+                //System.out.println(arr.toString());
+
+                //userlist toString
+                //System.out.println(ul.toString());
+                //sleep & cycle increment
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(ThreadBot.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+                cycle++;
+
+                //stampo solo ultimo update (se ci sono update)
+                if (arr.length() > 0) {
+                    JSONObject obj = arr.getJSONObject(arr.length() - 1);
+                    Update update = jp.parseUpdate(obj);
+                    rm.setOffset(update.getUpdate_id() + 1);
+                    //System.out.println(update.toString());
+
+                    if (update.isCommand()) {
+                        String citta = update.getCitta();
+
+                        //invio messaggio a chi mi ha mandato l'update
+                        OSMManager osm = new OSMManager();
+                        try {
+                            rm.sendMessage(update.getChat_id(), "Ricevuto :D");
+
+                            //prendo il primo posto e aggiungo o aggiorno l'utente
+                            Place p = osm.getPlace(citta);
+                            User u = new User(p, update.getFrom_id());
+                            int findUserResult = ul.findUser(u);
+                            if (findUserResult == -1) {
+                                ul.add(u);
+                            } else {
+                                ul.updateUser(findUserResult, u);
+                            }
+                            ul.updateFile();
+                        } catch (ParserConfigurationException | SAXException | IOException ex) {
+                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    } else {
+                        System.out.println("Non è un comando");
+                    }
+                } else {
+                    System.out.println("Nessun update nelle ultime 24 ore :)");
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ThreadBot.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -94,6 +94,7 @@ public class Update {
     public void setFrom_first_name(String from_first_name) {
         this.from_first_name = from_first_name;
     }
+
     public long getChat_id() {
         return chat_id;
     }
@@ -144,9 +145,11 @@ public class Update {
 
     //ritorna true solo se il comando è /citta
     public boolean isCommand() {
-        if (text.substring(0, 1).equals("/")) {
-            if (text.substring(0, text.indexOf(' ')).equals("/citta")) {
-                return true;
+        if (text.length() > 6) {
+            if (text.substring(0, 1).equals("/")) {
+                if (text.substring(0, text.indexOf(' ')).equals("/citta")) {
+                    return true;
+                }
             }
         }
         return false;
@@ -163,7 +166,7 @@ public class Update {
         }
         return "NA";
     }
-    
+
     public boolean isBotCommand() {
         return (entities_type.equals("bot_command"));
     }

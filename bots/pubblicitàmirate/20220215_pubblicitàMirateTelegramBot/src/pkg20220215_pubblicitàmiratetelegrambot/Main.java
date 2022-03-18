@@ -5,20 +5,6 @@
  */
 package pkg20220215_pubblicitàmiratetelegrambot;
 
-import OSM.OSMManager;
-import OSM.Place;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.xml.parsers.ParserConfigurationException;
-import mytelegramapi.*;
-import mytelegramapi.Objects.Update;
-import mytelegramapi.Objects.User;
-import mytelegramapi.Objects.UserList;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.xml.sax.SAXException;
-
 /**
  *
  * @author Giacomo

@@ -75,6 +75,23 @@ public class TelegramBotManager {
         return jsonString;
     }
 
+    public long getOffset() {
+        return offset;
+    }
+
+    public String getUpdatesWithOffset() throws IOException {
+        //build url
+        URL url = new URL(getUrlWithToken() + "getUpdates?offset=" + offset);
+        BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+
+        //read response
+        String jsonString = br.lines().collect(Collectors.joining());
+
+        //close buffered reader, return json
+        br.close();
+        return jsonString;
+    }
+
     public String getMe() throws IOException {
         URL url = new URL(getUrlWithToken() + "getMe");
         BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -90,7 +107,7 @@ public class TelegramBotManager {
     public void sendMessage(long chat_id, String message) throws InterruptedException {
         try {
             String urlString = getUrlWithToken() + "sendMessage?chat_id=" + chat_id + "&text=" + getEncodedString(message);
-            System.out.println(urlString);
+            //System.out.println(urlString);
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(urlString))
@@ -104,6 +121,10 @@ public class TelegramBotManager {
         } catch (IOException ex) {
             Logger.getLogger(TelegramBotManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void setOffset(long offset) {
+        this.offset = offset;
     }
 
     public String getEncodedString(String toEncode) throws UnsupportedEncodingException {

@@ -76,7 +76,7 @@ public class OSMManager {
         nodelist = root.getElementsByTagName("place");
         if (nodelist != null && nodelist.getLength() > 0) {
             element = (Element) nodelist.item(0);
-            return new Place(element.getAttribute("place_id").toString(), Double.parseDouble(element.getAttribute("lat")), Double.parseDouble(element.getAttribute("lon")));
+            return new Place(element.getAttribute("place_id"), Double.valueOf(element.getAttribute("lat")), Double.valueOf(element.getAttribute("lon")));
         } else {
             System.out.println("NESSUN PLACE TROVATO");
             return null;

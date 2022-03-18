@@ -44,7 +44,7 @@ public class UserList {
             userList.add(u);
         }
         csvReader.close();
-        System.out.println("[UserList - readFromFile] LISTA CARICATA DA FILE");
+        System.out.println("[UserList-readFromFile] LISTA CARICATA DA FILE");
     }
 
     public void updateFile() throws IOException {
@@ -59,10 +59,12 @@ public class UserList {
         bw.write(s);
         bw.flush();
         bw.close();
+        System.out.println("[UserList-updateFile] FILE UPDATED");
     }
 
     public void add(User u) {
         userList.add(u);
+        System.out.println("[UserList-add] USER ADDED");
     }
 
     public String toString() {
@@ -91,7 +93,7 @@ public class UserList {
                 return i;
             }
         }
-        System.out.println("[UserList-findUser] USER NOT FOUND\n");
+        System.out.println("[UserList-findUser] USER NOT FOUND");
 
         return -1;
     }
@@ -99,5 +101,6 @@ public class UserList {
     //update di uno user in base alla posizione
     public void updateUser(int index, User u) {
         userList.set(index, u);
+        System.out.println("[UserList-updateUser] USER UPDATED");
     }
 }
