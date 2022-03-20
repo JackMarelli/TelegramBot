@@ -48,11 +48,23 @@ public class Place {
         this.lon = lon;
     }
 
+    @Override
     public String toString() {
         return ("Place ID: " + id + "\nLAT: " + lat + "\nLON: " + lon);
     }
 
     public String toCSV() {
         return (id + ";" + lat + ";" + lon);
+    }
+
+    //range in km
+    public boolean isInRange(Place p, double range) {
+        double theta = p.getLon() - lon;
+        double dist = Math.sin(Math.toRadians(p.getLat())) * Math.sin(Math.toRadians(lat)) + Math.cos(Math.toRadians(p.getLat())) * Math.cos(Math.toRadians(lat)) * Math.cos(Math.toRadians(theta));
+        dist = Math.acos(dist);
+        dist = Math.toDegrees(dist);
+        dist = dist * 60 * 1.853155; //convert to km
+        System.out.println("[Place - isInRange] DIST: " + dist);
+        return (dist <= range);
     }
 }

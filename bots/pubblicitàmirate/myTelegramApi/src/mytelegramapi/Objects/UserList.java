@@ -38,8 +38,8 @@ public class UserList {
         BufferedReader csvReader = new BufferedReader(new FileReader(filename));
         while ((row = csvReader.readLine()) != null) {
             String[] data = row.split(";");
-            Place p = new Place(data[1], Double.parseDouble(data[2]), Double.parseDouble(data[3]));
-            User u = new User(p, data[0]);
+            Place p = new Place(data[0], Double.parseDouble(data[1]), Double.parseDouble(data[2]));
+            User u = new User(p, data[3]);
 
             userList.add(u);
         }

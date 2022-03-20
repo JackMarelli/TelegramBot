@@ -42,6 +42,8 @@ public class ThreadBot extends Thread {
         UserList ul = null;
         try {
             ul = new UserList();
+            GUI gui = new GUI(ul);
+            System.out.println(ul.toString());
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
