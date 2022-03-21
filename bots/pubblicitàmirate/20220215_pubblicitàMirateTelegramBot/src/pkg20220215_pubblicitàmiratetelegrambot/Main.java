@@ -19,7 +19,9 @@ public class Main {
        ThreadBot tb = new ThreadBot();
        tb.start();
     }
+    
 }
+
 
 //struttura di una riga di "users.csv";
 //[Place ID];[Lat];[Lon];[User Id]\n

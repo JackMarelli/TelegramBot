@@ -36,13 +36,13 @@ public class ThreadBot extends Thread {
     @Override
     public void run() {
         String token = "5275943838:AAGcv3Ma63vSiY4-r-q1qS-qdwnHrewlWII";
-        TelegramBotManager rm = new TelegramBotManager(token);
+        TelegramBotManager tbm = new TelegramBotManager(token);
         jsonParser jp = new jsonParser();
 
         UserList ul = null;
         try {
             ul = new UserList();
-            GUI gui = new GUI(ul);
+            GUI gui = new GUI(ul, tbm);
             System.out.println(ul.toString());
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
@@ -62,10 +62,10 @@ public class ThreadBot extends Thread {
             System.out.println("\nThreadBot CYCLE N. " + cycle);
             try {
                 String jsonString = "";
-                if (rm.getOffset() != 0) {
-                    jsonString = rm.getUpdatesWithOffset();
+                if (tbm.getOffset() != 0) {
+                    jsonString = tbm.getUpdatesWithOffset();
                 } else {
-                    jsonString = rm.getUpdates();
+                    jsonString = tbm.getUpdates();
                 }
 
                 JSONObject updatesObj = new JSONObject(jsonString);
@@ -87,7 +87,7 @@ public class ThreadBot extends Thread {
                 if (arr.length() > 0) {
                     JSONObject obj = arr.getJSONObject(arr.length() - 1);
                     Update update = jp.parseUpdate(obj);
-                    rm.setOffset(update.getUpdate_id() + 1);
+                    tbm.setOffset(update.getUpdate_id() + 1);
                     //System.out.println(update.toString());
 
                     if (update.isCommand()) {
@@ -96,7 +96,7 @@ public class ThreadBot extends Thread {
                         //invio messaggio a chi mi ha mandato l'update
                         OSMManager osm = new OSMManager();
                         try {
-                            rm.sendMessage(update.getChat_id(), "Ricevuto :D");
+                            tbm.sendMessage(update.getChat_id(), "Ricevuto :D");
 
                             //prendo il primo posto e aggiungo o aggiorno l'utente
                             Place p = osm.getPlace(citta);
