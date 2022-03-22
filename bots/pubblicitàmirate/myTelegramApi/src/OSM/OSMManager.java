@@ -86,4 +86,30 @@ public class OSMManager {
     public String getEncodedString(String toEncode) throws UnsupportedEncodingException {
         return URLEncoder.encode(toEncode, StandardCharsets.UTF_8.toString());
     }
+    
+    //restituisce il valore testuale dell’elemento figlio specificato
+    private String getTextValue(Element element, String tag) {
+        String value = null;
+        NodeList nodelist;
+        nodelist = element.getElementsByTagName(tag);
+        if (nodelist != null && nodelist.getLength() > 0) {
+            value = nodelist.item(0).getFirstChild().getNodeValue();
+        }
+        return value;
+    }
+
+    // restituisce il valore intero dell’elemento figlio specificato
+    private int getIntValue(Element element, String tag) {
+        return Integer.parseInt(getTextValue(element, tag));
+    }
+
+    // restituisce il valore numerico dell’elemento figlio specificato
+    private float getFloatValue(Element element, String tag) {
+        return Float.parseFloat(getTextValue(element, tag));
+    }
+
+     // restituisce il valore numerico dell’elemento figlio specificato
+    private double getDoubleValue(Element element, String tag) {
+        return Double.parseDouble(getTextValue(element, tag));
+    }
 }
